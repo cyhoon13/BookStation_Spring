@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context" 
+	xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+       
+<!-- @Autowired 사용을 위해(컨트롤러 클래스에서 어노테이션을 사용할 수 있도록 옵션설정) -->
+    <context:annotation-config/> 
+    
+   	<!-- com.board -->
+   <context:component-scan base-package="com.member"/>
+    
+    <!-- 파일 다운로드뷰를 위한 전용 viewResolver를 빈즈로 등록(객체를 생성) 0순위 -->
+    <!-- <bean class="org.springframework.web.servlet.view.BeanNameViewResolver"
+    		   p:order="0"/> -->
+    
+    <!-- 
+    리소스 번들에 관련된 환경설정 
+    리소스 번들=>웹상에 공통으로 출력할 문자열이나 에러메세지를 등록해서 필요로했을때
+    				   특정위치에 출력시켜주는 파일
+    messages.label=>패키지명.불러올파일명.properties(확장자가 생략된 상태)
+    messages.validation->message패키지에 있는 validation.properties파일 => 옛날 방식
+    요즘은 한글로 저장한 뒤 <property name="defaultEncoding" value="utf-8" /> 사용
+    -->
+    <bean id="messageSource" 
+        class="org.springframework.context.support.ResourceBundleMessageSource">
+        <property name="basenames">
+	        <list>
+	            <value>messages.label</value>
+	            <value>messages.validation</value>
+	        </list>
+        </property>
+        <!-- <property name="defaultEncoding" value="utf-8" /> -->
+    </bean> 
+    <!-- 
+    파일 업로드 52428800->byte단위 50MB->51,200KB->52,428,800byte 까지 업로드 가능
+    CommonsMultipartResolver->업로드 관여하는 클래스를 빈즈로 등록
+    maxUploadSize(최대업로드 크기를 지정)
+    defaultEncoding(한글처리 부분설정)
+     -->
+     <bean id="multipartResolver"
+     class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+     	<property name="maxUploadSize" value="52428800"/>
+     	<property name="defaultEncoding" value="utf-8"/>
+     </bean>
+    
+    <!-- 스프링에서 에러를 잡기위해서 개발자가 예외페이지 작성 
+    SimpleMappingExceptionResolver->웹상에서 에러가 발생->개발자가 작성한 페이지로
+    예외처리를 할 수가 있다.(빈즈로 등록->클래스의 객체를 생성하기위해서=>메서드를 호출하기위해서)
+    ex) setExceptionMappings(에러가 발생이 됐을때 이동할 에러페이지를 지정)
+    ex) NullPointerException -> 에러페이지, NumberFormatException,,,
+    	  Exception(부모) 상속 => 모든 예러 처리위해
+    	  <prop key="java.lang.Exception">예외처리페이지명</prop>
+    -->
+    <!-- <bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+        <property name="exceptionMappings">
+            <props>
+                <prop key="java.lang.Exception">pageError</prop>
+            </props>
+        </property>
+    </bean> -->
+    
+    <!-- viewResolver 설정 -->
+    <bean id="viewResolver"
+ class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/WEB-INF/view/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean> 
+</beans>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
