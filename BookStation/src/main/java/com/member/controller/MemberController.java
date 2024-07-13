@@ -356,6 +356,14 @@ public class MemberController {
   		return "leave";//return "이동시킬 파일명";
   	}
   	
+  	 //회원탈퇴 페이지 이동
+  	@RequestMapping(value="/leaveSuccess.do",method=RequestMethod.GET)
+  	public String getLeaveSuccess(HttpSession session) {
+  		log.info("leaveSuccess 이동");
+  		
+  		return "leaveSuccess";//return "이동시킬 파일명";
+  	}
+  	
   	//회원탈퇴
   	@RequestMapping(value="/leave.do",method=RequestMethod.POST)
   	public String memberLeave(@RequestParam("member_password") String memberPassword, 
@@ -375,8 +383,8 @@ public class MemberController {
             // 회원탈퇴 처리
             memberDAO.gradeUpdate(memberId);
             memberDAO.memberLeave(memberId);
-            //session.invalidate(); // 세션 무효화
-            return "leaveSuccess"; // 탈퇴 후 회원탈퇴 성공 페이지로 이동
+            session.invalidate(); // 세션 무효화
+            return "redirect:/leaveSuccess.do"; // 탈퇴 후 회원탈퇴 성공 페이지로 이동
         } else {
             return "redirect:/login.do"; // 로그인 정보 없을 경우 로그인 페이지로 이동
         }
