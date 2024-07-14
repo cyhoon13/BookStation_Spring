@@ -356,39 +356,31 @@ public class MemberController {
   		return "leave";//return "이동시킬 파일명";
   	}
   	
-  	 //회원탈퇴 페이지 이동
-  	@RequestMapping(value="/leaveSuccess.do",method=RequestMethod.GET)
-  	public String getLeaveSuccess(HttpSession session) {
-  		log.info("leaveSuccess 이동");
-  		
-  		return "leaveSuccess";//return "이동시킬 파일명";
-  	}
-  	
-  	//회원탈퇴
-  	@RequestMapping(value="/leave.do",method=RequestMethod.POST)
-  	public String memberLeave(@RequestParam("member_password") String memberPassword, 
-  							HttpSession session, Model model) {
-        // 세션에서 로그인된 회원 정보 가져오기
-        LoginVO loginMember = (LoginVO) session.getAttribute("loginMember");
-        log.debug("세션에서 로그인된 회원 정보=>"+loginMember);
-        if (loginMember != null) {
-            String memberId = loginMember.getMember_id();
-
-            // 비밀번호 확인
-            LoginVO login = memberDAO.memberLogin(memberId, memberPassword);
-            if (login == null) {
-                model.addAttribute("leaveError", "비밀번호가 일치하지 않습니다.");
-                return "redirect:/leave.do"; // 비밀번호가 일치하지 않으면 회원탈퇴 페이지로 다시 이동
-            }
-            // 회원탈퇴 처리
-            memberDAO.gradeUpdate(memberId);
-            memberDAO.memberLeave(memberId);
-            session.invalidate(); // 세션 무효화
-            return "redirect:/leaveSuccess.do"; // 탈퇴 후 회원탈퇴 성공 페이지로 이동
-        } else {
-            return "redirect:/login.do"; // 로그인 정보 없을 경우 로그인 페이지로 이동
-        }
-    }
+	 //회원탈퇴
+	 @RequestMapping(value="/leave.do",method=RequestMethod.POST)
+	 public String memberLeave(@RequestParam("member_password") String memberPassword, 
+	  																							HttpSession session, Model model) {
+	        // 세션에서 로그인된 회원 정보 가져오기
+	        LoginVO loginMember = (LoginVO) session.getAttribute("loginMember");
+	        log.debug("세션에서 로그인된 회원 정보=>"+loginMember);
+	        if (loginMember != null) {
+	            String memberId = loginMember.getMember_id();
+	            log.debug("탈퇴할 회원의 아이디=>"+memberId);
+	            // 비밀번호 확인
+	            LoginVO login = memberDAO.memberLogin(memberId, memberPassword);
+	            if (login == null) {
+	                model.addAttribute("leaveError", "비밀번호가 일치하지 않습니다.");
+	                return "leave"; // 비밀번호가 일치하지 않으면 회원탈퇴 페이지로 다시 이동
+	            } else {
+	            // 회원탈퇴 처리(login테이블에서 삭제 후 member테이블에 등급을 Inactive로 변경)
+		            memberDAO.gradeUpdate(memberId);
+		            memberDAO.memberLeave(memberId);
+		            return "redirect:/logout.do"; // 탈퇴 후 로그아웃 처리
+	            }
+	        } else {
+	            return "redirect:/login.do"; // 로그인 정보 없을 경우 로그인 페이지로 이동
+	        }
+	    }
   
   	//회원정보 수정 페이지 회원정보 출력
   	@RequestMapping(value = "/userInfoChange.do", method = RequestMethod.GET)

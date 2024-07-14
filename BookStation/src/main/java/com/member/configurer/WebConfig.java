@@ -21,7 +21,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addInterceptor(authInterceptor)
 				.addPathPatterns("/**")
 				.excludePathPatterns("/memberFind.do","/logout.do","/mailCheck.do","/mailCheck2.do","/checkId.do",
-									"/main.do","/login.do","/idSearch.do","/pwChange.do","/register.do","/leaveSuccess.do",
+									"/main.do","/login.do","/idSearch.do","/pwChange.do","/register.do",
 									"/registerSuccess.do","/customerService.do","/faq.do","/detail.do","/bestseller.do",
 									"/category.do","/categoryDetail.do","/newbook.do","/searchbook.do","/notice.do",
 									"/css/**","/fonts/**","/images/**","/js/**", "/scss/**","/vendor/**");
