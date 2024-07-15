@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,6 +40,8 @@ public class MemberController {
     private JavaMailSender mailSender;
 	@Autowired
 	private AdminDAO adminDAO;
+	@Autowired
+    private PasswordEncoder passwordEncoder;
 	
 	//로그인 페이지 이동
 	@RequestMapping(value="/login.do",method=RequestMethod.GET)
@@ -63,15 +66,15 @@ public class MemberController {
     									@RequestParam("member_password") String member_password, 
     									 HttpSession session, Model model) {
     	
-        LoginVO login = memberDAO.memberLogin(member_id,member_password);
+        LoginVO login = memberDAO.memberLogin(member_id);
         log.debug("로그인 시도=>"+login);
         // 로그인 시도 로그tryLog 테이블에 저장
         Map<String, Object> map = new HashMap<>();
         map.put("member_id", member_id);
         
-        if (login != null) {
+        if (login != null && passwordEncoder.matches(member_password, login.getMember_password())) {
             session.setAttribute("loginMember", login); // 로그인 성공 시 세션에 회원 정보 저장
-            log.debug("세션에 회원정보=>"+login);
+            log.debug("세션에 회원정보 => " + login);
             
             // 로그인 성공 로그 저장
             adminDAO.insLogTryInSuccess(map);
@@ -142,6 +145,10 @@ public class MemberController {
 		if(log.isDebugEnabled()){ //로그객체의 정보를 출력할 준비(=디버깅모드)
 		   log.debug("memberVO="+memberVO);//log.debug("출력할 정보~)
 		}
+		
+		 // 비밀번호 암호화
+        String encodedPassword = passwordEncoder.encode(memberVO.getMember_password());
+        memberVO.setMember_password(encodedPassword);
 		
 		memberDAO.memberRegister(memberVO);
 		model.addAttribute("member_name", memberVO.getMember_name());
@@ -240,24 +247,29 @@ public class MemberController {
 	@RequestMapping(value="/updatePassword.do", method=RequestMethod.POST)
 	public String updatePassword(@RequestParam("member_id") String member_id,
 	                             				@RequestParam("member_password") String member_password) {
-		// 데이터 변경 로그 저장
-        // 현재 로그인한 회원의 변경 전 비밀번호 가져오기
-        String pwdNow = adminDAO.getThisMemberPassword(member_id);
-        if (!pwdNow.equals(member_password)) {		// 비밀번호가 변경되었다면
-    		// 데이터 변경 로그에 저장 - member와 login
-    		Map<String, Object> memDT = new HashMap<>();
-    		memDT.put("member_id", member_id);
-    		memDT.put("chngCode", "UDT");
-    		memDT.put("targetTable", "member, login");
-    		memDT.put("targetColumn", "member_password");
-    		memDT.put("pageID", adminDAO.getPageID("pwChange"));
-    		memDT.put("chngValue", member_password);
-    		adminDAO.insDataChangeLog(memDT);
+		// 현재 로그인한 회원의 변경 전 비밀번호 가져오기
+        String currentPasswordHash = adminDAO.getThisMemberPassword(member_id);
+        log.debug("현재 비밀번호(암호화된 상태): " + currentPasswordHash);
+
+        if (!passwordEncoder.matches(member_password, currentPasswordHash)) { // 비밀번호가 변경되었다면
+            // 새로운 비밀번호 암호화
+            String newEncryptedPassword = passwordEncoder.encode(member_password);
+
+            // 데이터 변경 로그에 저장 - member와 login
+            Map<String, Object> memDT = new HashMap<>();
+            memDT.put("member_id", member_id);
+            memDT.put("chngCode", "UDT");
+            memDT.put("targetTable", "member, login");
+            memDT.put("targetColumn", "member_password");
+            memDT.put("pageID", adminDAO.getPageID("pwChange"));
+            memDT.put("chngValue", newEncryptedPassword);
+            adminDAO.insDataChangeLog(memDT);
+
+            // 비밀번호 변경
+            memberDAO.passwordChange(newEncryptedPassword, member_id);
         }
-        // 데이터 변경 로그 저장
-	    memberDAO.passwordChange(member_password, member_id);
-	    return "redirect:/login.do"; // 비밀번호 변경 후 로그인 페이지로 이동
-	}
+        return "redirect:/login.do"; // 비밀번호 변경 후 로그인 페이지로 이동
+    }
 	
 	//아이디 중복체크
 	@RequestMapping(value="/checkId.do", method=RequestMethod.GET)
@@ -366,16 +378,18 @@ public class MemberController {
 	        if (loginMember != null) {
 	            String memberId = loginMember.getMember_id();
 	            log.debug("탈퇴할 회원의 아이디=>"+memberId);
+	            // 데이터베이스에서 회원 정보 조회
+	            LoginVO login = memberDAO.memberLogin(memberId);
+
 	            // 비밀번호 확인
-	            LoginVO login = memberDAO.memberLogin(memberId, memberPassword);
-	            if (login == null) {
+	            if (login == null || !passwordEncoder.matches(memberPassword, login.getMember_password())) {
 	                model.addAttribute("leaveError", "비밀번호가 일치하지 않습니다.");
 	                return "leave"; // 비밀번호가 일치하지 않으면 회원탈퇴 페이지로 다시 이동
 	            } else {
-	            // 회원탈퇴 처리(login테이블에서 삭제 후 member테이블에 등급을 Inactive로 변경)
-		            memberDAO.gradeUpdate(memberId);
-		            memberDAO.memberLeave(memberId);
-		            return "redirect:/logout.do"; // 탈퇴 후 로그아웃 처리
+	                // 회원탈퇴 처리 (login 테이블에서 삭제 후 member 테이블에 등급을 Inactive로 변경)
+	                memberDAO.gradeUpdate(memberId);
+	                memberDAO.memberLeave(memberId);
+	                return "redirect:/logout.do"; // 탈퇴 후 로그아웃 처리
 	            }
 	        } else {
 	            return "redirect:/login.do"; // 로그인 정보 없을 경우 로그인 페이지로 이동
@@ -463,33 +477,39 @@ public class MemberController {
     @RequestMapping(value="/updatePassword2.do", method=RequestMethod.POST)
     public String updatePassword2(@RequestParam("member_password") String member_password,
                                                  HttpSession session) {
-        // 세션에서 로그인된 회원 정보 가져오기
+    	// 세션에서 로그인된 회원 정보 가져오기
         LoginVO loginMember = (LoginVO) session.getAttribute("loginMember");
         log.debug("로그인된 회원 정보=> " + loginMember);
-        
-        // 현재 로그인한 회원의 변경 전 비밀번호 가져오기
-        String pwdNow = adminDAO.getThisMemberPassword(loginMember.getMember_id());
 
         if (loginMember != null) {
             String member_id = loginMember.getMember_id();
-            memberDAO.passwordChange(member_password, member_id);
+
+            // 현재 로그인한 회원의 변경 전 비밀번호 가져오기
+            String currentPasswordHash = adminDAO.getThisMemberPassword(member_id);
+            log.debug("현재 비밀번호(암호화된 상태): " + currentPasswordHash);
+
+            // 새로운 비밀번호 암호화
+            String newEncryptedPassword = passwordEncoder.encode(member_password);
+            
+            // 비밀번호 변경
+            memberDAO.passwordChange(newEncryptedPassword, member_id);
             log.debug("비밀번호 변경 아이디=> " + member_id);
-            if (!pwdNow.equals(member_password)) {		// 비밀번호가 변경되었다면
-        		// 데이터 변경 로그에 저장 - member와 login
-        		MemberVO thisMem = adminDAO.getOneMem(member_id);
-        		Map<String, Object> memDT = new HashMap<>();
-        		memDT.put("member_id", member_id);
-        		memDT.put("chngCode", "UDT");
-        		memDT.put("targetTable", "member, login");
-        		memDT.put("targetColumn", "member_password");
-        		memDT.put("pageID", adminDAO.getPageID("userInfoChange"));
-        		memDT.put("chngValue", member_password);
-        		adminDAO.insDataChangeLog(memDT);
+
+            // 데이터 변경 로그에 저장 - member와 login
+            if (!passwordEncoder.matches(member_password, currentPasswordHash)) { // 비밀번호가 변경되었다면
+                MemberVO thisMem = adminDAO.getOneMem(member_id);
+                Map<String, Object> memDT = new HashMap<>();
+                memDT.put("member_id", member_id);
+                memDT.put("chngCode", "UDT");
+                memDT.put("targetTable", "member, login");
+                memDT.put("targetColumn", "member_password");
+                memDT.put("pageID", adminDAO.getPageID("userInfoChange"));
+                memDT.put("chngValue", newEncryptedPassword);
+                adminDAO.insDataChangeLog(memDT);
             }
             return "redirect:/mypage.do"; // 비밀번호 변경 후 마이페이지로 이동
         } else {
             return "redirect:/login.do"; // 로그인 정보가 없으면 로그인 페이지로 이동
         }
     }
-    
 }

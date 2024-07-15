@@ -146,6 +146,9 @@
             </props>
       </property>
    </bean>
+   
+    <!-- PasswordEncoder 빈 -->
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
 </beans>
 
 

@@ -170,8 +170,14 @@
 	    <artifactId>selenium-java</artifactId>
 	    <version>4.22.0</version>
 	</dependency>
-
 	
+	<!-- 비밀번호 암호화 -->
+	<dependency>
+	    <groupId>org.springframework.security</groupId>
+	    <artifactId>spring-security-core</artifactId>
+	    <version>5.4.6</version>
+   </dependency>
+
   </dependencies>
   <build>
     <finalName>BookStation3</finalName>

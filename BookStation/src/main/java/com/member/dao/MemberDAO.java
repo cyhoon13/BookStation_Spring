@@ -12,8 +12,15 @@ import com.member.domain.MemberVO;
 public interface MemberDAO {
 	
 	  //로그인
-	 @Select("select * from login where member_id=#{member_id} and member_password=#{member_password}")
-	 public LoginVO memberLogin(@Param("member_id") String member_id,@Param("member_password") String member_password);
+		/*
+		 * @Select("select * from login where member_id=#{member_id} and member_password=#{member_password}"
+		 * ) public LoginVO memberLogin(@Param("member_id") String
+		 * member_id,@Param("member_password") String member_password);
+		 */
+	 
+	//로그인
+	@Select("select * from login where member_id=#{member_id}")
+	public LoginVO memberLogin(String member_id);
 		 
 	 //회원가입
 	 @Insert("insert into member(member_id,member_password,member_name,member_gender,member_email,member_phone,member_zipcode,member_address1,member_address2,member_birthday,reg_date)"

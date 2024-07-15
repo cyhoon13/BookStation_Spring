@@ -50,11 +50,11 @@
 					<div class="right-top-bar flex-w h-full">
 					<c:choose>
 						<c:when test="${not empty sessionScope.loginMember}">
-							<c:if test="${sessionScope.loginMember.getMember_id() eq 'admin'}">
+							<c:if test="${sessionScope.loginMember.getMember_id() eq 'admin1234'}">
 								<a href="adminMember.do?sort=all" class="flex-c-m trans-04 p-lr-25">관리자 페이지</a>
 								<a href="logout.do" class="flex-c-m trans-04 p-lr-25">로그아웃</a>
 							</c:if>
-							<c:if test="${sessionScope.loginMember.getMember_id() ne 'admin'}">
+							<c:if test="${sessionScope.loginMember.getMember_id() ne 'admin1234'}">
 								<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">안녕하세요 ${sessionScope.loginMember.member_id }님 :)</a>
 								<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">보유포인트 [ <fmt:formatNumber value="${sessionScope.loginMember.member_point }" pattern="#,##0"/> point ]</a>
 								<a class="flex-c-m trans-04 p-lr-25" style="padding: 0 10px; color: #B5EEDF">내등급 [ ${sessionScope.loginMember.grade_name } &nbsp;<img src="images/icons/${sessionScope.loginMember.grade_name }.png" alt="ICON-PAY" style="width: 20px;">&nbsp;]</a>
