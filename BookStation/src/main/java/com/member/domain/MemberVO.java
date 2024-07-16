@@ -39,118 +39,134 @@ public class MemberVO {
 	}
 	
 	public String getMember_id() {
-		System.out.println("getUser_id()=>"+member_id);
+		//System.out.println("getUser_id()=>"+member_id);
 		return member_id;
 	}
 	public void setMember_id(String member_id) {
-		this.member_id = member_id;
-		System.out.println("setMember_id()=>"+member_id);
+		this.member_id = convert(member_id);
+		//System.out.println("setMember_id()=>"+member_id);
 	}
 	public String getMember_password() {
-		System.out.println("getMember_password()=>"+member_password);
+		//System.out.println("getMember_password()=>"+member_password);
 		return member_password;
 	}
 	public void setMember_password(String member_password) {
-		this.member_password = member_password;
-		System.out.println("setMember_password()=>"+member_password);
+		this.member_password = convert(member_password);
+		//System.out.println("setMember_password()=>"+member_password);
 	}
 	public String getMember_name() {
-		System.out.println("getMember_name()=>"+member_name);
+		//System.out.println("getMember_name()=>"+member_name);
 		return member_name;
 	}
 	public void setMember_name(String member_name) {
-		this.member_name = member_name;
-		System.out.println("setMember_name()=>"+member_name);
+		this.member_name = convert(member_name);
+		//System.out.println("setMember_name()=>"+member_name);
 	}
 	public String getMember_gender() {
-		System.out.println("getMember_gender()=>"+member_gender);
+		//System.out.println("getMember_gender()=>"+member_gender);
 		return member_gender;
 	}
 	public void setMember_gender(String member_gender) {
-		this.member_gender = member_gender;
-		System.out.println("setMember_gender()=>"+member_gender);
+		this.member_gender = convert(member_gender);
+		//System.out.println("setMember_gender()=>"+member_gender);
 	}
 	public String getMember_email() {
 		System.out.println("getMember_email()=>"+member_email);
 		return member_email;
 	}
 	public void setMember_email(String member_email) {
-		this.member_email = member_email;
-		System.out.println("setMember_email()=>"+member_email);
+		this.member_email = convert(member_email);
+		//System.out.println("setMember_email()=>"+member_email);
 	}
 	public String getMember_phone() {
-		System.out.println("getMember_phone()=>"+member_phone);
+		//System.out.println("getMember_phone()=>"+member_phone);
 		return member_phone;
 	}
 	public void setMember_phone(String member_phone) {
-		this.member_phone = member_phone;
-		System.out.println("setMember_phone()=>"+member_phone);
+		this.member_phone = convert(member_phone);
+		//System.out.println("setMember_phone()=>"+member_phone);
 	}
 	public String getMember_zipcode() {
-		System.out.println("getMember_zipcode()=>"+member_zipcode);
+		//System.out.println("getMember_zipcode()=>"+member_zipcode);
 		return member_zipcode;
 	}
 	public void setMember_zipcode(String member_zipcode) {
-		this.member_zipcode = member_zipcode;
-		System.out.println("setMember_zipcode()=>"+member_zipcode);
+		this.member_zipcode = convert(member_zipcode);
+		//System.out.println("setMember_zipcode()=>"+member_zipcode);
 	}
 	public String getMember_address1() {
-		System.out.println("getMember_address1()=>"+member_address1);
+		//System.out.println("getMember_address1()=>"+member_address1);
 		return member_address1;
 	}
 	public void setMember_address1(String member_address1) {
-		this.member_address1 = member_address1;
-		System.out.println("setMember_address1()=>"+member_address1);
+		this.member_address1 = convert(member_address1);
+		//System.out.println("setMember_address1()=>"+member_address1);
 	}
 	public String getMember_address2() {
-		System.out.println("getMember_address2()=>"+member_address2);
+		//System.out.println("getMember_address2()=>"+member_address2);
 		return member_address2;
 	}
 	public void setMember_address2(String member_address2) {
-		this.member_address2 = member_address2;
-		System.out.println("setMember_address2()=>"+member_address2);
+		this.member_address2 = convert(member_address2);
+		//System.out.println("setMember_address2()=>"+member_address2);
 	}
 	public String getMember_birthday() {
-		System.out.println("getMember_birthday()=>"+member_birthday);
+		//System.out.println("getMember_birthday()=>"+member_birthday);
 		return member_birthday;
 	}
 	public void setMember_birthday(String member_birthday) {
-		this.member_birthday = member_birthday;
-		System.out.println("setMember_birthday()=>"+member_birthday);
+		this.member_birthday = convert(member_birthday);
+		//System.out.println("setMember_birthday()=>"+member_birthday);
 	}
 	public int getMember_point() {
-		System.out.println("getMember_point()=>"+member_point);
+		//System.out.println("getMember_point()=>"+member_point);
 		return member_point;
 	}
 	public void setMember_point(int member_point) {
 		this.member_point = member_point;
-		System.out.println("setMember_point()=>"+member_point);
+		//System.out.println("setMember_point()=>"+member_point);
 	}
 	public int getMember_totalPrice() {
-		System.out.println("getMember_totalPrice()=>"+member_totalPrice);
+		//System.out.println("getMember_totalPrice()=>"+member_totalPrice);
 		return member_totalPrice;
 	}
 	public void setMember_totalPrice(int member_totalPrice) {
 		this.member_totalPrice = member_totalPrice;
-		System.out.println("setMember_totalPrice()=>"+member_totalPrice);
+		//System.out.println("setMember_totalPrice()=>"+member_totalPrice);
 	}
 	public String getGrade_name() {
-		System.out.println("getGrade_name()=>"+grade_name);
+		//System.out.println("getGrade_name()=>"+grade_name);
 		return grade_name;
 	}
 	public void setGrade_name(String grade_name) {
 		this.grade_name = grade_name;
-		System.out.println("setGrade_name()=>"+grade_name);
+		//System.out.println("setGrade_name()=>"+grade_name);
 	}
 	public Date getReg_date() {
-		System.out.println("getReg_date()=>"+reg_date);
+		//System.out.println("getReg_date()=>"+reg_date);
 		return reg_date;
 	}
 	public void setReg_date(Date reg_date) {
 		this.reg_date = reg_date;
-		System.out.println("setReg_date()=>"+reg_date);
+		//System.out.println("setReg_date()=>"+reg_date);
 	}
-	
-    
-	
+	//이 클래스에서만 사용하기위해서 접근지정자 private <,>,(,)=>변경메서드
+	private static String convert(String name) {
+		if(name!=null){
+		    //2.입력받은 문자열중에서 자바스크립트 구문을 실행시킬수 있는 특수기호를 입력X(<,>)
+		    //문자열메서드->replaceAll(1.변경전문자열,2.변경후 문자열)
+		    name=name.replaceAll("<","&lt");
+		    name=name.replaceAll(">","&gt");
+		    name=name.replaceAll("&","&amp");
+		    //추가 eval(" " or ' ')
+		    name=name.replaceAll("\\(","&#40");
+		    name=name.replaceAll("\\)","&#41");
+		    //"test"  'test'
+		    name=name.replaceAll("\"","&quot");
+		    name=name.replaceAll("\'","&apos");
+		}else{ //name==null
+			return null; //입력을 하지 않았다면 더 이상 실행X
+		}
+			return name;
+	}
 }
