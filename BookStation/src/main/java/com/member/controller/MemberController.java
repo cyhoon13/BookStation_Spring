@@ -251,7 +251,7 @@ public class MemberController {
         String currentPasswordHash = adminDAO.getThisMemberPassword(member_id);
         log.debug("현재 비밀번호(암호화된 상태): " + currentPasswordHash);
 
-        if (!passwordEncoder.matches(member_password, currentPasswordHash)) { // 비밀번호가 변경되었다면
+        if (!passwordEncoder.matches(member_password, currentPasswordHash)) {
             // 새로운 비밀번호 암호화
             String newEncryptedPassword = passwordEncoder.encode(member_password);
 
@@ -465,7 +465,6 @@ public class MemberController {
             memberDAO.infoChange(memberVO);
             //log.debug("수정된 회원정보"+memberVO);
             session.setAttribute("loginMember", loginMember); 
-            // 세션 갱신 시 MemberVO를 LoginVO로 변환하는지 확인
             log.debug("갱신된 세션정보=>"+loginMember);
             return "redirect:/mypage.do"; // 수정 후 마이페이지로 이동
         } else {
@@ -496,7 +495,7 @@ public class MemberController {
             log.debug("비밀번호 변경 아이디=> " + member_id);
 
             // 데이터 변경 로그에 저장 - member와 login
-            if (!passwordEncoder.matches(member_password, currentPasswordHash)) { // 비밀번호가 변경되었다면
+            if (!passwordEncoder.matches(member_password, currentPasswordHash)) {
                 MemberVO thisMem = adminDAO.getOneMem(member_id);
                 Map<String, Object> memDT = new HashMap<>();
                 memDT.put("member_id", member_id);
