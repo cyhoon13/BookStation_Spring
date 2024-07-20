@@ -66,12 +66,14 @@ public class MemberController {
     									@RequestParam("member_password") String member_password, 
     									 HttpSession session, Model model) {
     	
+    	// 아이디로 회원 정보 조회
         LoginVO login = memberDAO.memberLogin(member_id);
         log.debug("로그인 시도=>"+login);
         // 로그인 시도 로그tryLog 테이블에 저장
         Map<String, Object> map = new HashMap<>();
         map.put("member_id", member_id);
         
+        // passwordEncoder.matches => 입력된 비밀번호를 동일한 해시 알고리즘으로 암호화하고, 데이터베이스에 저장된 암호화된 비밀번호와 비교
         if (login != null && passwordEncoder.matches(member_password, login.getMember_password())) {
             session.setAttribute("loginMember", login); // 로그인 성공 시 세션에 회원 정보 저장
             log.debug("세션에 회원정보 => " + login);

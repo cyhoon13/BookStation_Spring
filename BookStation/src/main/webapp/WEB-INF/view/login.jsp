@@ -86,32 +86,31 @@
 	</script>
 <!--===============================================================================================-->
 	<script>
-	$(function(){
-        $('#btn-login').click(function(event){
-            // 폼 제출을 막기 위해 기본 이벤트를 중단
-            event.preventDefault();
-            
-            // 아이디와 비밀번호 입력 값 확인
-            var userId = $('#userId').val();
-            var userPwd = $('#userPwd').val();
-
-            // 입력 값이 없는 경우 알림 표시 및 폼 제출 방지
-            if(userId.trim() === "" && userPwd.trim() === ""){
-                alert("아이디와 비밀번호를 입력해주세요.");
-            }
-            else if(userId.trim() === ""){
-                alert("아이디를 입력해주세요.");
-            }
-            else if(userPwd.trim() === ""){
-                alert("비밀번호를 입력해주세요.");
-            }
-            else{
-                // 입력 값이 모두 있는 경우 폼 제출
-                $(this).closest('form').submit();
-                /* location.href = "main.do"; */
-            }
-        });
-    });
+		$(function(){
+	        $('#btn-login').click(function(event){
+	            // 폼 제출을 막기 위해 기본 이벤트를 중단
+	            event.preventDefault();
+	            
+	            // 아이디와 비밀번호 입력 값 확인
+	            var userId = $('#userId').val();
+	            var userPwd = $('#userPwd').val();
+	
+	            // 입력 값이 없는 경우 알림 표시 및 폼 제출 방지
+	            if(userId.trim() === "" && userPwd.trim() === ""){
+	                alert("아이디와 비밀번호를 입력해주세요.");
+	            }
+	            else if(userId.trim() === ""){
+	                alert("아이디를 입력해주세요.");
+	            }
+	            else if(userPwd.trim() === ""){
+	                alert("비밀번호를 입력해주세요.");
+	            }
+	            else{
+	                // 입력 값이 모두 있는 경우 폼 제출
+	                $(this).closest('form').submit();
+	            }
+	        });
+	    });
 	</script>
 <!--===============================================================================================-->
 	<script src="js/main.js"></script>
