@@ -144,9 +144,11 @@ public class MemberController {
 	@RequestMapping(value="/register.do",method=RequestMethod.POST)
 	public String postRegister(@ModelAttribute MemberVO memberVO, Model model) {
 		
+		/*
 		if(log.isDebugEnabled()){ //로그객체의 정보를 출력할 준비(=디버깅모드)
 		   log.debug("memberVO="+memberVO);//log.debug("출력할 정보~)
 		}
+		*/
 		
 		 // 비밀번호 암호화
         String encodedPassword = passwordEncoder.encode(memberVO.getMember_password());
