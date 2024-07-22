@@ -27,7 +27,7 @@ public interface AdminDAO {
 	 * 		- 전체 회원 목록, 활동 회원 목록, 탈퇴 회원 목록 나눠 보기
 	 * 		- 페이징 처리
 	 */
-	// 모든 Member 리스트 - 날짜순, 페이징처리 적용
+	// 모든 회원 리스트 - 날짜순, 페이징처리 적용
 	@Select("select * from ("
 			+ "	select rownum rnum, mem.* from ("
 			+ "		select * from member order by reg_date desc"
@@ -35,11 +35,11 @@ public interface AdminDAO {
 			+ ") where rnum between #{start} and #{end}")
 	public List<AdminMemVO> getAllMemberList(Map<String, Object> map);
 	
-	// 모든 Member 수(활동+탈퇴)
+	// 모든 회원 수(활동+탈퇴)
 	@Select("select count(*) from member")
 	public int getAllMemberCount();
 	
-	// 활동 중인 Member 리스트 - 날짜순, 페이징처리 적용
+	// 활동 중인 회원 리스트 - 날짜순, 페이징처리 적용
 	@Select("select * from ("
 			+ "	select rownum rnum, mem.* from ("
 			+ "		select * from member where grade_name!='Inactive' order by reg_date desc"
@@ -47,7 +47,7 @@ public interface AdminDAO {
 			+ ") where rnum between #{start} and #{end}")
 	public List<AdminMemVO> getActiveMemberList(Map<String, Object> map);
 	
-	// 활동 중인 Member 수(로그인 테이블 수 = 활동 중인 회원 수)
+	// 활동 중인 회원 수(로그인 테이블 수 = 활동 중인 회원 수)
 	@Select("select count(*) from login")
 	public int getActiveMemCount();
 	
