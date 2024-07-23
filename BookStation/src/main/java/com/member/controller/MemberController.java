@@ -288,8 +288,8 @@ public class MemberController {
     @ResponseBody
     public String mailCheckGET(String email) throws Exception{
         
-        // 뷰(View)로부터 넘어온 데이터 확인
-        log.info("이메일 데이터 전송 확인");
+        // 뷰(View)로부터 넘어온 인증번호 확인
+        //log.info("이메일 데이터 전송 확인");
         log.info("인증번호 : " + email);
         
         // 인증번호(난수) 생성
@@ -308,6 +308,7 @@ public class MemberController {
                 "<br>" + 
                 "해당 인증번호를 인증번호 확인란에 기입하여 주세요."; 
         try {
+        	//MIME => Multi-purpose Internet Mail Extesions의 약자로, 전자 우편을 위한 인터넷 표준 포맷을 의미
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
             helper.setFrom(setFrom);
