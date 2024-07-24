@@ -251,7 +251,7 @@ public class MemberController {
 	@RequestMapping(value="/updatePassword.do", method=RequestMethod.POST)
 	public String updatePassword(@RequestParam("member_id") String member_id,
 	                             				@RequestParam("member_password") String member_password) {
-		// 현재 로그인한 회원의 변경 전 비밀번호 가져오기
+		// 현재 회원의 변경 전 비밀번호 가져오기
         String currentPasswordHash = adminDAO.getThisMemberPassword(member_id);
         log.debug("현재 비밀번호(암호화된 상태): " + currentPasswordHash);
 
@@ -289,8 +289,8 @@ public class MemberController {
     public String mailCheckGET(String email) throws Exception{
         
         // 뷰(View)로부터 넘어온 인증번호 확인
-        //log.info("이메일 데이터 전송 확인");
-        log.info("인증번호 : " + email);
+        log.info("이메일 데이터 전송 확인");
+        log.info("이메일 : " + email);
         
         // 인증번호(난수) 생성
         Random random = new Random();
@@ -331,7 +331,7 @@ public class MemberController {
         
         // 뷰(View)로부터 넘어온 데이터 확인
         log.info("이메일 데이터 전송 확인");
-        log.info("인증번호 : " + email);
+        log.info("이메일 : " + email);
         
         // 인증번호(난수) 생성
         Random random = new Random();
