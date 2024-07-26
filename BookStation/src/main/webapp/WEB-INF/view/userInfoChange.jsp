@@ -262,7 +262,7 @@
                // 사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
                    addr = data.roadAddress;
-               } else { // 사용자가 지번 주소를 선택했을 경우(J)
+               } else { // 사용자가 지번 주소를 선택했을 경우
                    addr = data.jibunAddress;
                }
    
@@ -323,9 +323,6 @@
      
         // 저장 버튼을 클릭했을 때
         $('#saveButton').click(function() {
-
-         // 폼 제출시 변경내용 적용은 백엔드에서 구현
-         /* event.preventDefault(); */
          
          // 입력된 정보 가져오기
          var newName = $('#nameInput').val();
