@@ -146,66 +146,7 @@
 				$('.shippingform').show(); // 세 번째 컨테이너 표시
 			});
 		});
-	      /*
-	      //이메일 인증
-	      var code = "";  // 이메일 전송 인증번호 저장 위한 코드
-	      var isVerified = false;  // 인증번호가 일치하는지 확인하는 상태
-
-	   	  // 기본 정보를 모두 입력시에만 다음 버튼 활성화
-	      $('#userId, #userPwd, #rePwd, #userName, #birth, #userEmail, #emailNum').on('input', function() {
-	          updateNextButtonState2();
-	      });
-
-	      // 인증번호 이메일 전송 
-	      $("#sendemailbutton").click(function() {
-	          var email = $("#userEmail").val();  // 입력한 이메일
-	          var checkBox = $("#emailNum");  // 인증번호 입력란
-
-	          $.ajax({
-	              type: "GET",
-	              url: "mailCheck.do?email=" + email,
-	              success: function(data) {
-	                  checkBox.attr("disabled", false);
-	                  code = data;
-	                  isVerified = false;  // 새로운 인증번호가 발송되면 인증 상태를 초기화
-	                  alert("인증번호가 발송되었습니다.");  // 인증번호 발송 알림 메시지
-	              },
-	              error: function(xhr, status, error) {
-	                  if (xhr.status === 400) {
-	                      alert("유효하지 않은 이메일 주소입니다. 다시 시도해주세요.");  // 이메일 주소 유효하지 않음
-	                  }
-	              }
-	          });
-	      });
-
-	      // 인증번호 비교
-	      $("#emailnumcheck").click(function() {
-	          var inputCode = $("#emailNum").val();  // 입력코드
-
-	          if (inputCode === code) {  // 일치할 경우
-	              alert("인증이 완료되었습니다.");
-	              isVerified = true;
-	          } else {  // 일치하지 않을 경우
-	              alert("인증번호를 다시 확인해주세요.");
-	              isVerified = false;
-	          }
-	          updateNextButtonState2();  // 인증 상태 변경 시에도 버튼 상태 업데이트
-	      });
-
-	      function updateNextButtonState2() {
-	          var allFilled = true;
-
-	          if ($('#userId').val() === '' || $('#userPwd').val() === '' || $('#rePwd').val() === '' || $('#userName').val() === '' || $('#birth').val() === '' || $('#userEmail').val() === '' || $('#emailNum').val() === '') {
-	              allFilled = false;
-	          }
-
-	          if (allFilled && isVerified) {  // 두 조건이 모두 충족될 때
-	              $('#nextbutton2').prop('disabled', false);
-	          } else {
-	              $('#nextbutton2').prop('disabled', true);
-	          }
-	      }
-	      */
+	    
 	    //우편번호 검색
 		function sample6_execDaumPostcode() {
 		    new daum.Postcode({
