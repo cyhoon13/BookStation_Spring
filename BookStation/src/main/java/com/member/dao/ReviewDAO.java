@@ -14,10 +14,10 @@ import com.member.domain.ReviewVO;
 public interface ReviewDAO {
 
     // 리뷰 목록 리스트 갯수 가져오기
-    // 전체 기간 리뷰 갯수(디폴트) - 작성자 이지은
+    // 전체 기간 리뷰 갯수(디폴트)
     @Select("SELECT COUNT(*) FROM review where isReview=#{isReview} and member_id=#{memID}")
     public int getReviewCount(Map<String, Object> map);
-    // 필터 - 하루, 일주일, 한달, 3개월에 따라 다른 갯수를 반환하는 메서드 - 작성자 이지은
+    // 필터 - 하루, 일주일, 한달, 3개월에 따라 다른 갯수를 반환하는 메서드
     @Select("select count(*)\r\n"
             + "from review, (\r\n"
             + "    select * from ordersPrint\r\n"
@@ -27,7 +27,7 @@ public interface ReviewDAO {
             + ") books\r\n"
             + "where isReview=#{isReview} and review.ordersPrint_id=books.ordersPrint_id")
     public int getReviewCountByFilter(Map<String, Object> map); 
-    // from-todate에 따른 리뷰 갯수 - 작성자 이지은
+    // from-todate에 따른 리뷰 갯수
     @Select("select count(*)\r\n"
             + "from review, (\r\n"
             + "    select * from ordersPrint\r\n"
@@ -39,7 +39,7 @@ public interface ReviewDAO {
     public int getReviewCountByCalendar(Map<String, Object> map);
 
     // 리뷰 목록 리스트 가져오기 - 날짜순으로 정렬해야 함
-    // 전체 기간 리뷰 목록(디폴트) - 작성자 이지은
+    // 전체 기간 리뷰 목록(디폴트)
     @Select("select * from (\r\n"
             + "    select rownum rnum, rev.* from(\r\n"
             + "        select review.*\r\n"
@@ -53,7 +53,7 @@ public interface ReviewDAO {
             + "    ) rev\r\n"
             + ") where rnum between #{start} and #{end}")
     public List<ReviewVO> getReviewList(Map<String, Object> map);
-    // 전체 기간 책 목록(디폴트) - 작성자 이지은
+    // 전체 기간 책 목록(디폴트)
     @Select("select book_name from (\r\n"
             + "    select rownum rnum, rev.* from(\r\n"
             + "        select book_name from book, (\r\n"
@@ -70,7 +70,7 @@ public interface ReviewDAO {
             + "    ) rev\r\n"
             + ") where rnum between #{start} and #{end}")
     public List<String> getBookList(Map<String, Object> map);
-    // 전체 기간 주문일 목록(디폴트) - 작성자 이지은
+    // 전체 기간 주문일 목록(디폴트)
     @Select("select ordersPrint_date from (\r\n"
             + "    select rownum rnum, reviews.ordersPrint_date from (\r\n"
             + "        select books.ordersPrint_date\r\n"
@@ -85,7 +85,7 @@ public interface ReviewDAO {
             + ") where rnum between #{start} and #{end}")
     public List<Date> getOrdersDateList(Map<String, Object> map);
 
-    // 필터 - 하루, 일주일, 한달, 3개월에 따라 다른 리스트를 반환하는 메서드 - 작성자 이지은
+    // 필터 - 하루, 일주일, 한달, 3개월에 따라 다른 리스트를 반환하는 메서드
     @Select("select * from (\r\n"
             + "    select rownum rnum, rev.* from(\r\n"
             + "        select review.*\r\n"
@@ -101,7 +101,7 @@ public interface ReviewDAO {
             + ") where rnum between #{start} and #{end}")
     public List<ReviewVO> getReviewListByFilter(Map<String, Object> map); 
 
-    // 필터 적용된 책 목록 조회 메서드 - 작성자 이지은
+    // 필터 적용된 책 목록 조회 메서드
     @Select("select book_name from (\r\n"
             + "    select rownum rnum, rev.* from(\r\n"
             + "        select book_name from book, (\r\n"
@@ -120,7 +120,7 @@ public interface ReviewDAO {
             + ") where rnum between #{start} and #{end}")
     public List<String> getBookListByFilter(Map<String, Object> map);
 
-    // 필터 적용된 주문일 목록 조회 메서드 - 작성자 이지은
+    // 필터 적용된 주문일 목록 조회 메서드
     @Select("select ordersPrint_date from (\r\n"
             + "    select rownum rnum, reviews.ordersPrint_date from (\r\n"
             + "        select books.ordersPrint_date\r\n"
@@ -136,7 +136,7 @@ public interface ReviewDAO {
             + ") where rnum between #{start} and #{end}")
     public List<Date> getOrdersDateListByFilter(Map<String, Object> map);
 
-    // from-todate에 따른 리뷰 리스트 - 작성자 이지은
+    // from-todate에 따른 리뷰 리스트
     @Select("select * from (\r\n"
             + "    select rownum rnum, rev.* from(\r\n"
             + "        select review.*\r\n"
@@ -189,25 +189,6 @@ public interface ReviewDAO {
             + "    ) reviews\r\n"
             + ") where rnum between #{start} and #{end}")
     public List<java.sql.Date> getOrdersDateListByCalendar(Map<String, Object> map);
-
-    //로그인
-    /*
-     * @Select("select user_id,user_password from login where user_id=#{user_id} and user_password=#{user_password}"
-     * ) public LoginVO memberLogin(String user_id,String user_password);
-     */
-
-    // 전체 리뷰 조회
-    /*
-    
-   @Select("SELECT COUNT(*) FROM review where isReview=0 or isReview=1")
-      public int getReviewCount();
-     */
-    
-    // 리뷰 추가
-    /*
-    @Insert("INSERT INTO review (review_id, member_id, isbn, review_date, review_content, review_score) " +
-            "VALUES (#{review_id}, #{member_id}, #{isbn}, #{review_date,jdbcType=DATE}, #{review_content,jdbcType=VARCHAR}, #{review_score})")
-    void insertReview(ReviewVo review); */
     
     //최대값을 구해주는 메서드 작성
     @Select("select max(review_id) from review")

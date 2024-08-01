@@ -43,7 +43,7 @@ public class adminController {
     public ModelAndView member(HttpServletRequest request,
     						   @RequestParam(value="sort", defaultValue="all") String sort,
                                @RequestParam(value="pageNum", defaultValue="1") int currentPage) {
-    	// 탭 전환에 따른 멤버 수
+    	// 탭 전환에 따른 회원 수
     	int count = 0;
     	switch(sort) {
     	case "active":
@@ -74,7 +74,7 @@ public class adminController {
     		allMemList = adminDAO.getAllMemberList(map);
     	}
     	
-    	// 상태 표기(화면에 띄우는게 보기 좋아서 추가)
+    	// 상태 표기
     	for(int i=0; i<allMemList.size(); i++) {
     		if(allMemList.get(i).getGrade_name().equals("Inactive")) {
     			allMemList.get(i).setState("탈퇴 회원");
