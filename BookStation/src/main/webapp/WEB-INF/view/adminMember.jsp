@@ -19,7 +19,7 @@
 	<link rel="stylesheet" type="text/css" href="css/AllOrderList.css">
 	<link rel="stylesheet" type="text/css" href="css/bookList.css">
 	<script type="text/javascript" src="http://code.jquery.com/jquery-3.3.1.min.js"></script>
-	<title>BookStation</title> 
+	<title>회원관리</title> 
 	<style type="text/css">
 		.btn {
 		    float: left;
